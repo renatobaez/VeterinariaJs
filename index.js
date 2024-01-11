@@ -1,12 +1,14 @@
 const { registrar, leer } = require('./operaciones')
-const operacion = process.argv[2]
+const [operacion, nombre, edad, animal, color, enfermedad] = process.argv.slice(2)
+
 if(operacion === 'registrar'){
-  console.log(registrar(process.argv[3], process.argv[4], process.argv[5], process.argv[6], process.argv[7]))
+  if(process.argv.length < 8){
+    console.log("\nError todos los campos son obligatorios: nombre, edad, animal, color, enfermedad")
+    return
+  }
+    console.log(registrar(nombre, edad, animal, color, enfermedad))
 }
 if(operacion === 'leer'){
-  const citas = leer()
-  citas.forEach(e => {
-    console.log(e)
-  })
+  console.log(leer())
 }
 

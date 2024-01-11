@@ -1,28 +1,38 @@
 const fs = require('fs')
 const registrar = (nombre, edad, animal, color, enfermedad) => {
-  if(nombre != undefined && edad != undefined && animal != undefined && color != undefined && enfermedad != undefined) {
-    const nuevaCita = {
-      nombre: nombre,
-      edad: edad,
-      animal: animal,
-      color: color,
-      enfermedad: enfermedad
-    }
-    if(fs.existsSync('citas.json')) {
-      const citas = JSON.parse(fs.readFileSync('citas.json', 'utf8'))
-      citas.push(nuevaCita)
-      fs.writeFileSync('citas.json', JSON.stringify(citas))
-    }
-    else{
-      fs.writeFileSync('citas.json', JSON.stringify([nuevaCita]))
-    }
-    return("\n Se registro la nueva cita")
-  } else {
-    return("\n Error todos los campos son obligatorios: nombre, edad, animal, color, enfermedad")
+  const nuevaCita = {
+    nombre,
+    edad,
+    animal,
+    color,
+    enfermedad
   }
+  if (fs.existsSync('citas.json')) {
+    const citas = JSON.parse(fs.readFileSync('citas.json', 'utf8'))
+    citas.push(nuevaCita)
+    fs.writeFileSync('citas.json', JSON.stringify(citas))
+  } else {
+    fs.writeFileSync('citas.json', JSON.stringify([nuevaCita]))
+  }
+  return ("\nSe registro la nueva cita")
 }
 const leer = () => {
   const citas = JSON.parse(fs.readFileSync('citas.json', 'utf8'))
-  return(citas)
+  let mensaje = ""
+  citas.forEach(e => {
+    mensaje += `
+      \nNombre: ${e.nombre} 
+      \nEdad: ${e.edad} 
+      \nAnimal: ${e.animal} 
+      \nColor: ${e.color} 
+      \nEnfermedad: ${e.enfermedad}
+      \n==================================
+    `
+  })
+  if (mensaje === "") {
+    return ("\nNo hay citas registradas")
+  } else {
+    return mensaje
+  }
 }
-module.exports = {registrar, leer}
+module.exports = { registrar, leer }
